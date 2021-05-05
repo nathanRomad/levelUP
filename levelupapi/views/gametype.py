@@ -17,7 +17,8 @@ class GameTypes(ViewSet):
         """
         try:
             game_type = GameType.objects.get(pk=pk)
-            serializer = GameTypeSerializer(game_type, context={'request': request})
+            serializer = GameTypeSerializer(
+                game_type, context={'request': request})
             return Response(serializer.data)
         except Exception as ex:
             return HttpResponseServerError(ex)
@@ -36,6 +37,7 @@ class GameTypes(ViewSet):
         serializer = GameTypeSerializer(
             gametypes, many=True, context={'request': request})
         return Response(serializer.data)
+
 
 class GameTypeSerializer(serializers.ModelSerializer):
     """JSON serializer for game types
