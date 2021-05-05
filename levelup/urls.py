@@ -13,6 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
+# Resource routing allows you to quickly declare all of the common routes for a given resourceful controller.
+# Instead of declaring separate routes for your index... a resourceful route declares them in a single line of code.
+
+from levelupapi.views import GameTypes
+from rest_framework import routers
 from django.conf.urls import include
 from django.urls import path
 from levelupapi.views import register_user, login_user
@@ -23,11 +29,16 @@ urlpatterns = [
     path('api-auth', include('rest_framework.urls', namespace='rest_framework')),
 ]
 
-from rest_framework import routers
-from levelupapi.views import GameTypes
+# There are two mandatory arguments to the register() method:
+# prefix - The URL prefix to use for this set of routes.
+# viewset - The viewset class.
+# r' = regex string
+# basename - third argument / The base to use for the URL names that are created. 
 
+from levelupapi.views import GameTypes, Games
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'gametypes', GameTypes, 'gametype')
+router.register(r'games', Games, 'game')
 
 urlpatterns = [
     path('', include(router.urls)),
