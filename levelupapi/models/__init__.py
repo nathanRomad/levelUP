@@ -1,5 +1,5 @@
-from .gamer import Gamer
 from .event import Event
 from .game import Game
+from .gamer import Gamer
 from .gameType import GameType
-from .players import Players
+from .player import Player
