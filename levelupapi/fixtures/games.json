@@ -1,0 +1,42 @@
+[
+    {
+        "model": "levelupapi.game",
+        "pk": 1,
+        "fields": {
+            "title": "Settlers of Catan",
+            "difficulty": 3,
+            "numberOfPlayers": 4,
+            "game_type": 1
+        }
+    },
+    {
+        "model": "levelupapi.game",
+        "pk": 2,
+        "fields": {
+            "title": "Monopoly",
+            "difficulty": 2,
+            "numberOfPlayers": 6,
+            "game_type": 1
+        }
+    },
+    {
+        "model": "levelupapi.game",
+        "pk": 3,
+        "fields": {
+            "title": "Dungeons & Dragons",
+            "difficulty": 3,
+            "numberOfPlayers": 6,
+            "game_type": 2
+        }
+    },
+    {
+        "model": "levelupapi.game",
+        "pk": 4,
+        "fields": {
+            "title": "Modern Warfare Warzone",
+            "difficulty": 4,
+            "numberOfPlayers": 150,
+            "game_type": 1
+        }
+    }
+]
