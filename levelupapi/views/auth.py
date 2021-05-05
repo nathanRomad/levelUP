@@ -24,6 +24,9 @@ def login_user(request):
         username = req_body['username']
         password = req_body['password']
         authenticated_user = authenticate(username=username, password=password)
+        # SELECT *
+        # FROM auth.token
+        # where user = ?
 
         # If authentication was successful, respond with their token
         if authenticated_user is not None:
@@ -51,11 +54,11 @@ def register_user(request):
     # Create a new user by invoking the `create_user` helper method
     # on Django's built-in User model
     new_user = User.objects.create_user(
-        username=req_body['username'],
-        email=req_body['email'],
-        password=req_body['password'],
-        first_name=req_body['first_name'],
-        last_name=req_body['last_name']
+        username = req_body['username'],
+        email = req_body['email'],
+        password = req_body['password'],
+        first_name = req_body['first_name'],
+        last_name = req_body['last_name']
     )
 
     # Now save the extra info in the levelupapi_gamer table
@@ -63,7 +66,6 @@ def register_user(request):
         bio=req_body['bio'],
         user=new_user
     )
-
     # Commit the user to the database by saving it
     gamer.save()
 

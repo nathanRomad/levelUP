@@ -1,5 +1,5 @@
 from django.db import models
-from .gameType import GameType
+from .game_type import GameType
 
 class Game(models.Model):
     title = models.CharField(max_length=50)
