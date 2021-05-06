@@ -36,10 +36,11 @@ urlpatterns = [
 # http://localhost:3000/gametypes?game=
 # basename - third argument / The base to use for the URL names that are created. 
 
-from levelupapi.views import GameTypeView, GameView
+from levelupapi.views import GameTypeView, GameView, EventView
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'gametypes', GameTypeView, 'gametype')
 router.register(r'games', GameView, 'game')
+router.register(r'events', EventView, 'event')
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -47,9 +48,3 @@ urlpatterns = [
     path('login', login_user),
     path('api-auth', include('rest_framework.urls', namespace='rest_framework')),
 ]
-
-from levelupapi.views import GameView, GameTypeView, EventView
-router = routers.DefaultRouter(trailing_slash=False)
-router.register(r'gametypes', GameTypeView, 'gametype')
-router.register(r'games', GameView, 'game')
-router.register(r'events', EventView, 'event')

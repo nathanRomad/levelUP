@@ -9,7 +9,6 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from levelupapi.models import Game, Event, Gamer
 from levelupapi.views.game import GameSerializer
-from levelupapi.views.event import EventSerializer
 
 
 class EventView(ViewSet):
@@ -39,7 +38,7 @@ class EventView(ViewSet):
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
 
-    def retrieve(self, request, pk=None):
+    def retrieve(self, request, pk):
         """Handle GET requests for single event
 
         Returns:
@@ -52,7 +51,7 @@ class EventView(ViewSet):
         except Exception:
             return HttpResponseServerError(ex)
 
-    def update(self, request, pk=None):
+    def update(self, request, pk):
         """Handle PUT requests for an event
 
         Returns:
@@ -74,7 +73,7 @@ class EventView(ViewSet):
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
 
-    def destroy(self, request, pk=None):
+    def destroy(self, request, pk):
         """Handle DELETE requests for a single game
 
         Returns:
@@ -125,7 +124,7 @@ class EventGamerSerializer(serializers.ModelSerializer):
 
 class EventSerializer(serializers.ModelSerializer):
     """JSON serializer for events"""
-    organizer = EventGamerSerializer(many=False)
+    host = EventGamerSerializer(many=False)
     game = GameSerializer(many=False)
 
     class Meta:
