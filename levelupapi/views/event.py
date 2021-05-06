@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from levelupapi.models import Game, Event, Gamer
 from levelupapi.views.game import GameSerializer
+from levelupapi.views.event import EventSerializer
 
 
 class EventView(ViewSet):
@@ -21,15 +22,15 @@ class EventView(ViewSet):
             Response -- JSON serialized event instance
         """
         gamer = Gamer.objects.get(user=request.auth.user)
+        game = Game.objects.get(pk=request.data["gameId"])
 
         event = Event()
-        event.time = request.data["time"]
-        event.date = request.data["date"]
+        event.name = request.data["name"]
         event.description = request.data["description"]
-        event.organizer = gamer
-
-        game = Game.objects.get(pk=request.data["gameId"])
+        event.datetime = request.data["datetime"]
         event.game = game
+        event.host = gamer
+        # event.attendees = []
 
         try:
             event.save()
@@ -57,16 +58,18 @@ class EventView(ViewSet):
         Returns:
             Response -- Empty body with 204 status code
         """
-        organizer = Gamer.objects.get(user=request.auth.user)
+        host = Gamer.objects.get(user=request.auth.user)
+        game = Game.objects.get(pk=request.data["gameId"])
 
         event = Event.objects.get(pk=pk)
+        event.name = request.data["name"]
         event.description = request.data["description"]
-        event.date = request.data["date"]
-        event.time = request.data["time"]
-        event.organizer = organizer
-
-        game = Game.objects.get(pk=request.data["gameId"])
+        event.datetime = request.data["datetime"]
         event.game = game
+        event.host = host
+        # event.attendees = []
+
+
         event.save()
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
@@ -105,3 +108,33 @@ class EventView(ViewSet):
         serializer = EventSerializer(
             events, many=True, context={'request': request})
         return Response(serializer.data)
+
+class EventUserSerializer(serializers.ModelSerializer):
+    """JSON serializer for event organizer's related Django user"""
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email']
+
+class EventGamerSerializer(serializers.ModelSerializer):
+    """JSON serializer for event organizer"""
+    user = EventUserSerializer(many=False)
+
+    class Meta:
+        model = Gamer
+        fields = ['user']
+
+class EventSerializer(serializers.ModelSerializer):
+    """JSON serializer for events"""
+    organizer = EventGamerSerializer(many=False)
+    game = GameSerializer(many=False)
+
+    class Meta:
+        model = Event
+        fields = ('id', 'name', 'description',
+                   'datetime', 'game',  'host')
+
+class GameSerializer(serializers.ModelSerializer):
+    """JSON serializer for games"""
+    class Meta:
+        model = Game
+        fields = ('id', 'title', 'maker', 'difficulty', 'numberOfPlayers')

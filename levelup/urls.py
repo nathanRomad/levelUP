@@ -47,3 +47,9 @@ urlpatterns = [
     path('login', login_user),
     path('api-auth', include('rest_framework.urls', namespace='rest_framework')),
 ]
+
+from levelupapi.views import GameView, GameTypeView, EventView
+router = routers.DefaultRouter(trailing_slash=False)
+router.register(r'gametypes', GameTypeView, 'gametype')
+router.register(r'games', GameView, 'game')
+router.register(r'events', EventView, 'event')
