@@ -17,7 +17,7 @@ Including another URLconf
 # Resource routing allows you to quickly declare all of the common routes for a given resourceful controller.
 # Instead of declaring separate routes for your index... a resourceful route declares them in a single line of code.
 
-from levelupapi.views import GameTypes
+# from levelupapi.views import GameTypes
 from rest_framework import routers
 from django.conf.urls import include
 from django.urls import path

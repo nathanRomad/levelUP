@@ -28,8 +28,8 @@ class Games(ViewSet):
         game = Game()
         game.title = request.data["title"]
         game.maker = request.data["maker"]
-        game.number_of_players = request.data["numberOfPlayers"]
-        game.skill_level = request.data["skillLevel"]
+        game.numberOfPlayers = request.data["numberOfPlayers"]
+        game.difficulty = request.data["difficulty"]
         game.gamer = gamer
 
         # Use the Django ORM to get the record from the database
@@ -86,8 +86,8 @@ class Games(ViewSet):
         game = Game.objects.get(pk=pk)
         game.title = request.data["title"]
         game.maker = request.data["maker"]
-        game.number_of_players = request.data["numberOfPlayers"]
-        game.skill_level = request.data["skillLevel"]
+        game.numberOfPlayers = request.data["numberOfPlayers"]
+        game.difficulty = request.data["difficulty"]
         game.gamer = gamer
 
         gametype = GameType.objects.get(pk=request.data["gameTypeId"])
@@ -145,5 +145,5 @@ class GameSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Game
-        fields = ('id', 'title', 'maker', 'number_of_players', 'skill_level', 'gametype')
+        fields = ('id', 'title', 'maker', 'numberOfPlayers', 'difficulty', 'gametype')
         depth = 1
