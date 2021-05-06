@@ -33,12 +33,13 @@ urlpatterns = [
 # prefix - The URL prefix to use for this set of routes.
 # viewset - The viewset class.
 # r' = regex string
+# http://localhost:3000/gametypes?game=
 # basename - third argument / The base to use for the URL names that are created. 
 
-from levelupapi.views import GameTypes, Games
+from levelupapi.views import GameTypeView, GameView
 router = routers.DefaultRouter(trailing_slash=False)
-router.register(r'gametypes', GameTypes, 'gametype')
-router.register(r'games', Games, 'game')
+router.register(r'gametypes', GameTypeView, 'gametype')
+router.register(r'games', GameView, 'game')
 
 urlpatterns = [
     path('', include(router.urls)),

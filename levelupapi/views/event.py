@@ -11,7 +11,7 @@ from levelupapi.models import Game, Event, Gamer
 from levelupapi.views.game import GameSerializer
 
 
-class Events(ViewSet):
+class EventView(ViewSet):
     """Level up events"""
 
     def create(self, request):

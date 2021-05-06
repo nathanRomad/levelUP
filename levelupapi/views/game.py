@@ -9,7 +9,7 @@ from rest_framework import status
 from levelupapi.models import Game, GameType, Gamer
 
 
-class Games(ViewSet):
+class GameView(ViewSet):
     """Level up games"""
 
     def create(self, request):
@@ -36,7 +36,7 @@ class Games(ViewSet):
         # whose `id` is what the client passed as the
         # `gameTypeId` in the body of the request.
         gametype = GameType.objects.get(pk=request.data["gameTypeId"])
-        game.gametype = gametype
+        game.game_type = gametype
 
         # Try to save the new game to the database, then
         # serialize the game instance as JSON, and send the
@@ -54,7 +54,7 @@ class Games(ViewSet):
 
 
 
-    def retrieve(self, request, pk=None):
+    def retrieve(self, request, pk):
         """Handle GET requests for single game
 
         Returns:
@@ -72,7 +72,7 @@ class Games(ViewSet):
         except Exception as ex:
             return HttpResponseServerError(ex)
 
-    def update(self, request, pk=None):
+    def update(self, request, pk):
         """Handle PUT requests for a game
 
         Returns:
@@ -84,21 +84,22 @@ class Games(ViewSet):
         # creating a new instance of Game, get the game record
         # from the database whose primary key is `pk`
         game = Game.objects.get(pk=pk)
+        gametype = GameType.objects.get(pk=request.data["gameTypeId"])
+
         game.title = request.data["title"]
         game.maker = request.data["maker"]
         game.numberOfPlayers = request.data["numberOfPlayers"]
         game.difficulty = request.data["difficulty"]
         game.gamer = gamer
+        game.game_type = gametype
 
-        gametype = GameType.objects.get(pk=request.data["gameTypeId"])
-        game.gametype = gametype
         game.save()
 
         # 204 status code means everything worked but the
         # server is not sending back any data in the response
         return Response({}, status=status.HTTP_204_NO_CONTENT)
 
-    def destroy(self, request, pk=None):
+    def destroy(self, request, pk):
         """Handle DELETE requests for a single game
 
         Returns:
@@ -145,5 +146,5 @@ class GameSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Game
-        fields = ('id', 'title', 'maker', 'numberOfPlayers', 'difficulty', 'gametype')
+        fields = ('id', 'title', 'maker', 'numberOfPlayers', 'difficulty', 'game_type')
         depth = 1
