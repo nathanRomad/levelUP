@@ -1,5 +1,6 @@
 {
     "python.linting.pylintEnabled": true,
+    "sqltools.useNodeRuntime": true,
     "sqltools.connections": [
         {
             "previewLimit": 50,
