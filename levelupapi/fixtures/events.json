@@ -7,12 +7,7 @@
             "description": "first game night.",
             "datetime": "2020-05-05 00:00:00",
             "game": 2,
-            "host": 1,
-            "attendees": [
-                1,
-                2,
-                3
-            ]
+            "host": 1
         }
     },
     {
@@ -23,12 +18,7 @@
             "description": "second game night.",
             "datetime": "2020-05-06 00:00:00",
             "game": 2,
-            "host": 1,
-            "attendees": [
-                1,
-                2,
-                3
-            ]
+            "host": 1
         }
     },
     {
@@ -39,12 +29,7 @@
             "description": "Third game night.",
             "datetime": "2020-05-07 00:00:00",
             "game": 2,
-            "host": 1,
-            "attendees": [
-                1,
-                2,
-                3
-            ]
+            "host": 1
         }
     }
 ]
