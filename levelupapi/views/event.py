@@ -121,7 +121,7 @@ class EventView(ViewSet):
         return Response(serializer.data)
 
     @action(methods=['post', 'delete'], detail=True)
-    def signup(self, request, pk=None):
+    def signup(self, request, pk):
         """Managing gamers signing up for events"""
 
         # A gamer wants to sign up for an event
