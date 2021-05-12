@@ -74,7 +74,6 @@ class GameView(ViewSet):
 
     def update(self, request, pk):
         """Handle PUT requests for a game
-
         Returns:
             Response -- Empty body with 204 status code
         """
@@ -85,6 +84,8 @@ class GameView(ViewSet):
         # from the database whose primary key is `pk`
         game = Game.objects.get(pk=pk)
         gametype = GameType.objects.get(pk=request.data["gameTypeId"])
+        # console.log('gametype: ', gametype);
+
 
         game.title = request.data["title"]
         game.maker = request.data["maker"]

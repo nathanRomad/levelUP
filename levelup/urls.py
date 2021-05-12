@@ -22,7 +22,6 @@ from rest_framework import routers
 from django.conf.urls import include
 from django.urls import path
 from levelupapi.views import register_user, login_user
-from levelupapi.views import GameTypeView, GameView, EventView, Profile
 
 urlpatterns = [
     path('register', register_user),
@@ -37,6 +36,7 @@ urlpatterns = [
 # http://localhost:3000/gametypes?game=
 # basename - third argument / The base to use for the URL names that are created. 
 
+from levelupapi.views import GameTypeView, GameView, EventView, Profile
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'gametypes', GameTypeView, 'gametype')
 router.register(r'games', GameView, 'game')
