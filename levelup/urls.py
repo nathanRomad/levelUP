@@ -23,12 +23,6 @@ from django.conf.urls import include
 from django.urls import path
 from levelupapi.views import register_user, login_user
 
-urlpatterns = [
-    path('register', register_user),
-    path('login', login_user),
-    path('api-auth', include('rest_framework.urls', namespace='rest_framework')),
-]
-
 # There are two mandatory arguments to the register() method:
 # prefix - The URL prefix to use for this set of routes.
 # viewset - The viewset class.
