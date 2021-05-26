@@ -35,9 +35,9 @@ class GameTests(APITestCase):
         # SEED DATABASE WITH ONE GAME TYPE
         # This is needed because the API does not expose a /gametypes
         # endpoint for creating game types
-        gametype = GameType()
-        gametype.label = "Board game"
-        gametype.save()
+        self.game_type = GameType()
+        self.game_type.label = "Board game"
+        self.game_type.save()
 
     def test_create_game(self):
         """
@@ -66,10 +66,10 @@ class GameTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         # Assert that the properties on the created resource are correct
-        self.assertEqual(json_response["title"], "Clue")
-        self.assertEqual(json_response["maker"], "Milton Bradley")
-        self.assertEqual(json_response["difficulty"], 5)
-        self.assertEqual(json_response["numberOfPlayers"], 6)
+        self.assertEqual(json_response["title"], data['title'])
+        self.assertEqual(json_response["maker"], data['maker'])
+        self.assertEqual(json_response["difficulty"], data['difficulty'])
+        self.assertEqual(json_response["numberOfPlayers"], data['numberOfPlayers'])
 
     def test_get_game(self):
         """
@@ -78,12 +78,12 @@ class GameTests(APITestCase):
 
         # Seed the database with a game
         game = Game()
-        game.game_type = 1
+        game.game_type = self.game_type
         game.difficulty = 5
         game.title = "Monopoly"
         game.maker = "Milton Bradley"
         game.numberOfPlayers = 4
-        game.gamer = 1
+        game.gamer_id = 1
 
         game.save()
 
@@ -100,22 +100,28 @@ class GameTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # Assert that the values are correct
-        self.assertEqual(json_response["title"], "Monopoly")
-        self.assertEqual(json_response["maker"], "Milton Bradley")
-        self.assertEqual(json_response["difficulty"], 5)
-        self.assertEqual(json_response["numberOfPlayers"], 4)
+        self.assertEqual(json_response["title"], game.title)
+        self.assertEqual(json_response["maker"], game.maker)
+        self.assertEqual(json_response["difficulty"], game.difficulty)
+        self.assertEqual(json_response["numberOfPlayers"], game.numberOfPlayers)
+        
+        # Using hard-coded test data:
+        # self.assertEqual(json_response["title"], "Monopoly")
+        # self.assertEqual(json_response["maker"], "Milton Bradley")
+        # self.assertEqual(json_response["difficulty"], 5)
+        # self.assertEqual(json_response["numberOfPlayers"], 4)
 
     def test_change_game(self):
         """
         Ensure we can change an existing game.
         """
         game = Game()
-        game.game_type = 1
+        game.game_type_id = 1
         game.difficulty = 5
         game.title = "Sorry"
         game.maker = "Milton Bradley"
         game.numberOfPlayers = 4
-        game.gamer = 1
+        game.gamer_id = 1
         game.save()
 
         # DEFINE NEW PROPERTIES FOR GAME
@@ -137,22 +143,28 @@ class GameTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # Assert that the properties are correct
-        self.assertEqual(json_response["title"], "Sorry")
-        self.assertEqual(json_response["maker"], "Hasbro")
-        self.assertEqual(json_response["difficulty"], 2)
-        self.assertEqual(json_response["numberOfPlayers"], 4)
+        self.assertEqual(json_response['title'], data['title'])
+        self.assertEqual(json_response['maker'], data['maker'])
+        self.assertEqual(json_response['difficulty'], data['difficulty'])
+        self.assertEqual(json_response['numberOfPlayers'], data['numberOfPlayers'])
+
+
+        # self.assertEqual(json_response["title"], "Sorry")
+        # self.assertEqual(json_response["maker"], "Hasbro")
+        # self.assertEqual(json_response["difficulty"], 2)
+        # self.assertEqual(json_response["numberOfPlayers"], 4)
 
     def test_delete_game(self):
         """
         Ensure we can delete an existing game.
         """
         game = Game()
-        game.game_type = 1
+        game.game_type_id = 1
         game.difficulty = 5
         game.title = "Sorry"
         game.maker = "Milton Bradley"
         game.numberOfPlayers = 4
-        game.gamer = 1
+        game.gamer_id = 1
         game.save()
 
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)

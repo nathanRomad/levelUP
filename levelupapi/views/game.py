@@ -52,8 +52,6 @@ class GameView(ViewSet):
         except ValidationError as ex:
             return Response({"reason": ex.message}, status=status.HTTP_400_BAD_REQUEST)
 
-
-
     def retrieve(self, request, pk):
         """Handle GET requests for single game
 
@@ -69,8 +67,11 @@ class GameView(ViewSet):
             game = Game.objects.get(pk=pk)
             serializer = GameSerializer(game, context={'request': request})
             return Response(serializer.data)
+        except Game.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
         except Exception as ex:
             return HttpResponseServerError(ex)
+
 
     def update(self, request, pk):
         """Handle PUT requests for a game
@@ -85,7 +86,6 @@ class GameView(ViewSet):
         game = Game.objects.get(pk=pk)
         gametype = GameType.objects.get(pk=request.data["gameTypeId"])
         # console.log('gametype: ', gametype);
-
 
         game.title = request.data["title"]
         game.maker = request.data["maker"]
@@ -139,6 +139,7 @@ class GameView(ViewSet):
             games, many=True, context={'request': request})
         return Response(serializer.data)
 
+
 class GameSerializer(serializers.ModelSerializer):
     """JSON serializer for games
 
@@ -147,5 +148,6 @@ class GameSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Game
-        fields = ('id', 'title', 'maker', 'numberOfPlayers', 'difficulty', 'game_type')
+        fields = ('id', 'title', 'maker', 'numberOfPlayers',
+                  'difficulty', 'game_type')
         depth = 1
