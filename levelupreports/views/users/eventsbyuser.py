@@ -16,10 +16,10 @@ def userevent_list(request):
             # Query for all games, with related user info.
             db_cursor.execute("""
                 SELECT
-                    e.id as EventId,
+                    e.id as event_id,
                     e.datetime,
                     g.title as game_name,
-                    gr.id as HOST,
+                    gr.id as host_id,
                     u.first_name ||' '|| u.last_name as full_name
                 FROM
                     levelupapi_event e
@@ -35,41 +35,52 @@ def userevent_list(request):
 
             # Take the flat data from the database, and build the
             # following data structure for each event.
+            #             {
+            #     1: {
+            #         "gamer_id": 1,  = host_id
+            #         "full_name": "Molly Ringwald", = full_name
+            #         "events": [
+            #             {
+            #                 "id": 5,  = event_id
+            #                 "datetime": "2020-12-23 00:00:00", = datetime
+            #                 "game_name": "Fortress America"  = game_name
+            #             }
+            #         ]
+            #     }
+            # }
 
             events_by_user = {}
 
             for row in dataset:
-                # Crete a Game instance and set its properties
+                # Crete a Event instance and set its properties
                 event = Event()
-                event.name = row["name"]
-                game.maker = row["maker"]
-                game.difficulty = row["difficulty"]
-                game.numberOfPlayers = row["numberOfPlayers"]
-                game.game_type_id = row["game_type_id"]
+                event.id = row["event_id"]
+                event.datetime = row["datetime"]
+                event.game_name = row["game_name"]
 
                 # Store the user's id
-                uid = row["user_id"]
+                uid = row["host_id"]
 
                 # If the user's id is already a key in the dictionary...
-                if uid in games_by_user:
+                if uid in events_by_user:
 
-                    # Add the current game to the `games` list for it
-                    games_by_user[uid]['games'].append(game)
+                    # Add the current event to the `users` list for it
+                    events_by_user[uid]['events'].append(event)
 
                 else:
                     # Otherwise, create the key and dictionary value
-                    games_by_user[uid] = {}
-                    games_by_user[uid]["id"] = uid
-                    games_by_user[uid]["full_name"] = row["full_name"]
-                    games_by_user[uid]["games"] = [game]
+                    events_by_user[uid] = {}
+                    events_by_user[uid]["host_id"] = uid
+                    events_by_user[uid]["full_name"] = row["full_name"]
+                    events_by_user[uid]["events"] = [event]
 
         # Get only the values from the dictionary and create a list from them
-        list_of_users_with_games = games_by_user.values()
+        list_of_events_hosted_by_gamers = events_by_user.values()
 
         # Specify the Django template and provide data context
-        template = 'users/list_with_games.html'
+        template = 'users/events_by_gamers.html'
         context = {
-            'usergame_list': list_of_users_with_games
+            'events_gamer_list': list_of_events_hosted_by_gamers
         }
 
         return render(request, template, context)
