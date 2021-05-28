@@ -16,20 +16,16 @@ def usergame_list(request):
             # Query for all games, with related user info.
             db_cursor.execute("""
                 SELECT
-                    g.id,
-                    g.title,
-                    g.maker,
-                    g.game_type_id,
-                    g.numberOfPlayers,
-                    g.difficulty,
-                    u.id user_id,
-                    u.first_name || ' ' || u.last_name AS full_name
+                    id,
+                    title,
+                    maker,
+                    game_type_id,
+                    numberOfPlayers,
+                    difficulty,
+                    user_id,
+                    full_name
                 FROM
-                    levelupapi_game g
-                JOIN
-                    levelupapi_gamer gr ON g.gamer_id = gr.id
-                JOIN
-                    auth_user u ON gr.user_id = u.id
+                    GAMES_BY_USER
             """)
 
             dataset = db_cursor.fetchall()
