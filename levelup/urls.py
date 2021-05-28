@@ -22,6 +22,7 @@ from rest_framework import routers
 from django.conf.urls import include
 from django.urls import path
 from levelupapi.views import register_user, login_user
+from django.contrib import admin
 
 # There are two mandatory arguments to the register() method:
 # prefix - The URL prefix to use for this set of routes.
@@ -38,6 +39,7 @@ router.register(r'events', EventView, 'event')
 router.register(r'profile', Profile, 'profile')
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     path('', include(router.urls)),
     path('', include('levelupreports.urls')),
     path('register', register_user),
